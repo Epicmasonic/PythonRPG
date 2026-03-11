@@ -34,7 +34,7 @@ class BattleHandler:
 	
 	def check_for_win(self):
 		for enemy in self.enemy_team:
-			if enemy.is_livng():
+			if enemy.is_living():
 				return True
 		return False
 	
