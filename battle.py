@@ -18,7 +18,7 @@ class BattleHandler:
 		living_party_members = []
 		
 		for party_member in self.player_team:
-			if party_member.is_livng():
+			if party_member.is_living():
 				living_party_members.append(party_member)
 		
 		return living_party_members
@@ -27,7 +27,7 @@ class BattleHandler:
 		living_enemies = []
 		
 		for enemy in self.enemy_team:
-			if enemy.is_livng():
+			if enemy.is_living():
 				living_enemies.append(enemy)
 		
 		return living_enemies
