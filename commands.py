@@ -279,7 +279,7 @@ def command_fight(battle_handler, shop_handler):
 
 def command_create(battle_handler):
 	temp = PartyMember("Unnamed",15,5)
-	temp.known_skills = [skills.Prepare, skills.Attack]
+	temp.known_skills = [skills.Prepare(), skills.Attack()]
 	
 	delay = None
 	while True:
