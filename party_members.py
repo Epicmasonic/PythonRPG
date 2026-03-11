@@ -51,6 +51,9 @@ class Battler:
 	def __repr__(self):
 		return self.name
 	
+	def is_living(self):
+		return self.health > 0
+	
 	def stringify_health(self):
 		"""
 		:return: A health bar
@@ -171,6 +174,26 @@ class PartyMember(Battler):
 		self.known_skills = []
 		
 		self.equipped_skills = []
+	
+	def edit_skill(self, skill, target):
+		if skill in self.equipped_skills:
+			self.equipped_skills.remove(skill)
+		
+		if target == -2:
+			self.equipped_skills.append(skill)
+		elif target != -1:
+			self.equipped_skills.insert(target, skill)
+	
+	def change_inspiration(self, inspiration_type, count):
+		if -count > self.inspirations[inspiration_type]:
+			count = -self.inspirations[inspiration_type]
+		
+		empty_slots = self.get_total_inspirations() - self.creativity
+		if count > empty_slots:
+			count = empty_slots
+		
+		self.inspirations[inspiration_type] += count
+		return count
 	
 	def get_total_inspirations(self):
 		total = 0

@@ -170,39 +170,30 @@ def show_plan(party_member):
 			i += 1
 
 def edit_plan(party_member):
-	skills = party_member.known_skills
-	skill_names = []
-	for skill in party_member.known_skills:
-		skill_names.append(skill.name)
+	skill_names = [skill.name for skill in party_member.known_skills]
 	
 	log.slow_print("What skill do you want to change?\n")
-	selected_skill = menu_input.get_choice(skills, skill_names)
+	selected_skill = menu_input.get_choice(party_member.known_skills, skill_names)
 	log.clear()
 	
-	skills = []
+	skill_ids = []
 	skill_names = []
 	index = 0
 	for skill in party_member.equipped_skills:
 		if skill == selected_skill:
-			skills.append(-1)
+			skill_ids.append(-1)
 			skill_names.append(f"{colors.GRAY}(Unequip){colors.NORMAL}")
 		else:
-			skills.append(index)
+			skill_ids.append(index)
 			skill_names.append(skill.name)
 			index += 1
-	skills.append(-2)
+	skill_ids.append(-2)
 	skill_names.append(f"{colors.GRAY}(Add){colors.NORMAL}")
 	
 	log.slow_print(f"Where do you want to add {selected_skill.name}?")
-	target = menu_input.get_choice(skills, skill_names)
+	target = menu_input.get_choice(skill_ids, skill_names)
 	
-	if selected_skill in party_member.equipped_skills:
-		party_member.equipped_skills.remove(selected_skill)
-	
-	if target == -2:
-		party_member.equipped_skills.append(selected_skill)
-	elif target != -1:
-		party_member.equipped_skills.insert(target, selected_skill)
+	party_member.edit_skill(selected_skill, target)
 
 def command_rest(battle_handler):
 	battle_handler.reset_battle()

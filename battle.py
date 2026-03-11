@@ -14,15 +14,33 @@ class BattleHandler:
 		
 		self.seen_win = None
 	
+	def get_living_party_members(self):
+		living_party_members = []
+		
+		for party_member in self.player_team:
+			if party_member.is_living():
+				living_party_members.append(party_member)
+		
+		return living_party_members
+	
+	def get_living_enemies(self):
+		living_enemies = []
+		
+		for enemy in self.enemy_team:
+			if enemy.is_living():
+				living_enemies.append(enemy)
+		
+		return living_enemies
+	
 	def check_for_win(self):
 		for enemy in self.enemy_team:
-			if enemy.health > 0:
+			if enemy.is_living():
 				return False
 		return True
 	
 	def check_for_loss(self):
 		for party_member in self.player_team:
-			if party_member.health > 0:
+			if party_member.is_living():
 				return False
 		return True
 	
@@ -58,7 +76,7 @@ class BattleHandler:
 		log.show_all()
 	
 	def run_turn(self, skip_header=False, skip_log=False, extra_info=False): # or more accurately, get_someone_to_run_turn_for_me()
-		if self.enemy_team == []:
+		if not self.enemy_team:
 			self.start_battle()
 			return
 		
@@ -66,7 +84,7 @@ class BattleHandler:
 		if skip_header:
 			delay = 0
 		
-		turn_info = {}
+		turn_info = {"Turn Owner": "Nobody"}
 		
 		if self.check_for_loss():
 			log.add_message("Nobody is willing to fight...")
@@ -99,13 +117,25 @@ class BattleHandler:
 		
 		log.slow_print(f"{colors.GREEN}PLAYER TEAM:{colors.NORMAL}\n", delay)
 		for party_member in self.player_team:
-			log.slow_print(f"{party_member.name}:", delay)
+			name_color = ""
+			if not party_member.is_living():
+				name_color = colors.GRAY
+			elif party_member == turn_info["Turn Owner"]:
+				name_color = colors.YELLOW
+			log.slow_print(f"{name_color}{party_member.name}{colors.NORMAL}:", delay)
+			
 			log.slow_print(f"[{party_member.stringify_health()}] {party_member.health}/{party_member.max_health}", delay)
 			log.slow_print(f"[{party_member.stringify_inspirations()}] {party_member.get_total_inspirations()}/{party_member.creativity}\n", delay)
 		
 		log.slow_print(f"{colors.GREEN}ENEMY TEAM:{colors.NORMAL}\n", delay)
 		for enemy in self.enemy_team:
-			log.slow_print(f"{enemy.name}:", delay)
+			name_color = ""
+			if not enemy.is_living():
+				name_color = colors.GRAY
+			elif enemy == turn_info["Turn Owner"]:
+				name_color = colors.YELLOW
+			log.slow_print(f"{name_color}{enemy.name}{colors.NORMAL}:", delay)
+			
 			log.slow_print(f"[{enemy.stringify_health()}] {enemy.health}/{enemy.max_health}\n", delay)
 		
 		log.slow_print(f"{colors.GREEN}BATTLE LOG:{colors.NORMAL}\n", delay)
