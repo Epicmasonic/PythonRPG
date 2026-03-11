@@ -188,7 +188,7 @@ class PartyMember(Battler):
 		if -count > self.inspirations[inspiration_type]:
 			count = -self.inspirations[inspiration_type]
 		
-		empty_slots = self.get_total_inspirations() - self.creativity
+		empty_slots = self.creativity - self.get_total_inspirations()
 		if count > empty_slots:
 			count = empty_slots
 		
