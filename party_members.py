@@ -184,6 +184,17 @@ class PartyMember(Battler):
 		elif target != -1:
 			self.equipped_skills.insert(target, skill)
 	
+	def change_inspiration(self, inspiration_type, count):
+		if -count > self.inspirations[inspiration_type]:
+			count = -self.inspirations[inspiration_type]
+		
+		empty_slots = self.get_total_inspirations() - self.creativity
+		if count > empty_slots:
+			count = empty_slots
+		
+		self.inspirations[inspiration_type] += count
+		return count
+	
 	def get_total_inspirations(self):
 		total = 0
 		for count in self.inspirations.values():
