@@ -40,7 +40,7 @@ class BattleHandler:
 	
 	def check_for_loss(self):
 		for party_member in self.player_team:
-			if party_member.is_livng():
+			if party_member.is_living():
 				return True
 		return False
 	
