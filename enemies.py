@@ -33,12 +33,7 @@ class Inklin(Enemy):
 		super().__init__("Inklin" + suffix, 5, elemental_weaknesses=["Water"], elemental_resistances=["Poison", "Lie"])
 	
 	def take_turn(self, battle_handler):
-		living_party_members = []
-		for party_member in battle_handler.player_team:
-			if party_member.health > 0:
-				living_party_members.append(party_member)
-		
-		party_member = random.choice(living_party_members)
+		party_member = random.choice(battle_handler.get_living_party_members())
 		add_message(f"{self.name} bites at {party_member.name}.")
 		damage = party_member.take_damage(2)
 		
