@@ -81,11 +81,7 @@ class Splash(Skill):
 	def use(self, battle_handler, user):
 		user.inspirations["Water"] += 1
 		
-		living_enemies = []
-		for enemy in battle_handler.enemy_team:
-			if enemy.health > 0:
-				living_enemies.append(enemy)
-		enemy = random.choice(living_enemies)
+		enemy = random.choice(battle_handler.get_living_enemies())
 		
 		add_message(f"{user.name} used {self.name} on {enemy.name}.")
 		add_message(f"{user.name} gained 1 Water inspiration.")
@@ -108,11 +104,7 @@ class Attack(Skill):
 	def use(self, battle_handler, user):
 		user.inspirations["Basic"] -= 1
 		
-		living_enemies = []
-		for enemy in battle_handler.enemy_team:
-			if enemy.health > 0:
-				living_enemies.append(enemy)
-		enemy = random.choice(living_enemies)
+		enemy = random.choice(battle_handler.get_living_enemies())
 		
 		add_message(f"{user.name} used {self.name} on {enemy.name}.")
 		damage = enemy.take_damage(2)
@@ -160,11 +152,7 @@ class HammerChop(Skill):
 		user.inspirations["Basic"] -= 2
 		user.inspirations["Zap"] -= 1
 		
-		living_enemies = []
-		for enemy in battle_handler.enemy_team:
-			if enemy.health > 0:
-				living_enemies.append(enemy)
-		enemy = random.choice(living_enemies)
+		living_enemies = battle_handler.get_living_enemies()
 		
 		add_message(f"{user.name} used {self.name}.")
 		damage = []

@@ -14,17 +14,35 @@ class BattleHandler:
 		
 		self.seen_win = None
 	
+	def get_living_party_members(self):
+		living_party_members = []
+		
+		for party_member in self.player_team:
+			if party_member.is_livng():
+				living_party_members.append(party_member)
+		
+		return living_party_members
+	
+	def get_living_enemies(self):
+		living_enemies = []
+		
+		for enemy in self.enemy_team:
+			if enemy.is_livng():
+				living_enemies.append(enemy)
+		
+		return living_enemies
+	
 	def check_for_win(self):
 		for enemy in self.enemy_team:
-			if enemy.health > 0:
-				return False
-		return True
+			if enemy.is_livng():
+				return True
+		return False
 	
 	def check_for_loss(self):
 		for party_member in self.player_team:
-			if party_member.health > 0:
-				return False
-		return True
+			if party_member.is_livng():
+				return True
+		return False
 	
 	def reset_battle(self):
 		self.turn_count = 0

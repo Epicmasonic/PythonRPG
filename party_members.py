@@ -51,6 +51,9 @@ class Battler:
 	def __repr__(self):
 		return self.name
 	
+	def is_living(self):
+		return self.health > 0
+	
 	def stringify_health(self):
 		"""
 		:return: A health bar
