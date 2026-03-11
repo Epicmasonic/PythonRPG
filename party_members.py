@@ -172,6 +172,15 @@ class PartyMember(Battler):
 		
 		self.equipped_skills = []
 	
+	def edit_skill(self, skill, target):
+		if skill in self.equipped_skills:
+			self.equipped_skills.remove(skill)
+		
+		if target == -2:
+			self.equipped_skills.append(skill)
+		elif target != -1:
+			self.equipped_skills.insert(target, skill)
+	
 	def get_total_inspirations(self):
 		total = 0
 		for count in self.inspirations.values():
