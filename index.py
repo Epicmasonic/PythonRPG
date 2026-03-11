@@ -37,6 +37,7 @@ MENU_ITEMS = [
 	"Get out of here!"
 ]
 
+log.clear() # For if you run it though the console
 log.slow_print(f"{colors.RED}WARNING:{colors.NORMAL}\nThis program will only work properly when run though the terminal.")
 log.slow_print("If you're trying to run it though PyCharm's console, it will not work.")
 menu_input.eat_input()
