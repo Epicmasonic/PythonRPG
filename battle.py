@@ -35,14 +35,14 @@ class BattleHandler:
 	def check_for_win(self):
 		for enemy in self.enemy_team:
 			if enemy.is_living():
-				return True
-		return False
+				return False
+		return True
 	
 	def check_for_loss(self):
 		for party_member in self.player_team:
 			if party_member.is_living():
-				return True
-		return False
+				return False
+		return True
 	
 	def reset_battle(self):
 		self.turn_count = 0
