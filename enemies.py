@@ -1,4 +1,5 @@
 #import colors
+import log
 from log import add_message
 from party_members import Battler
 
@@ -126,6 +127,6 @@ class Amalgam(Enemy):
 		top_p = 1
 		)
 		
-		print(response.choices[0].message.content)
+		log.add_message(response.choices[0].message.content)
 		
 		return {}
