@@ -1,9 +1,11 @@
 #import colors
+
 import log
 from log import add_message
 from party_members import Battler
 
 import random
+import re
 
 # The imports of shame
 import os
@@ -17,6 +19,15 @@ client = OpenAI(
 	base_url=endpoint,
 	api_key=token,
 )
+
+# result = {
+# 	party: [mem1, mem2],
+# 	response:{
+# 		party_member: "selected  party member from party, return as a string"
+# 		average_strength: "total the strength of all party members and return the average as an integer here"
+# 		current_pickahus_attack: "provide pikachus attack power ni here as an integer"
+# 	}
+# }
 
 SYSTEM = [
 	"You are an enemy in a simple RPG.",
@@ -45,6 +56,7 @@ SYSTEM = [
 	"Resolve: Decreases mental damage received."
 ]
 SYSTEM = '\n'.join(SYSTEM)
+#SYSTEM + str(result)
 
 class Enemy(Battler):
 	def __init__(self, name, health, attack=0, defense=0, charisma=0, resolve=0, elemental_weaknesses=None, elemental_resistances=None):
@@ -92,7 +104,7 @@ class Inklin(Enemy):
 
 class Amalgam(Enemy):
 	def __init__(self,suffix=""):
-		super().__init__("Amalgam" + suffix, 30)
+		super().__init__("Amalgam" + suffix, 30, 0, 1.5, 2, 0.5)
 	
 	def take_turn(self, battle_handler):
 		game_state = f"# You"
@@ -110,23 +122,43 @@ class Amalgam(Enemy):
 			game_state += f"\nCharisma: {self.charisma}"
 			game_state += f"\nResolve: {self.resolve}"
 		
-		response = client.chat.completions.create(
-			messages=[
-				{
-					"role": "system",
-					"content": SYSTEM,
-				},
-				{
-					"role": "user",
-					"content": game_state,
-				}
-			],
-		model = "openai/gpt-4o-mini",
-		temperature = 1,
-		max_tokens = 4096,
-		top_p = 1
-		)
+		try:
+			response = client.chat.completions.create(
+				messages=[
+					{
+						"role": "system",
+						"content": SYSTEM,
+					},
+					{
+						"role": "user",
+						"content": game_state,
+					}
+				],
+			model = "openai/gpt-4o-mini",
+			temperature = 1,
+			max_tokens = 4096,
+			top_p = 1
+			)
+		except Exception as e:
+			self.health = 0
+			return {}
 		
-		log.add_message(response.choices[0].message.content)
+		message = re.search("`(.+?)`", response.choices[0].message.content).group(1)
+		log.add_message(message)
+		message = message.split(" ")
+		
+		battlers = battle_handler.player_team + battle_handler.enemy_team
+		
+		if message[0] == "Attack":
+			for battler in battlers:
+				if battler.name.lower() == message[1].lower():
+					battler.take_damage(int(message[3]), True)
+					break
+		elif message[0] == "Convince":
+			for battler in battlers:
+				if battler.name.lower() == message[1].lower():
+					battler.take_damage(int(message[3]), False)
+					break
+		
 		
 		return {}

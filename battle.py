@@ -59,7 +59,7 @@ class BattleHandler:
 		self.reset_battle()
 		
 		roll = random.randint(1, 10)
-		if roll <= 9:
+		if roll <= 0:
 			self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
 		else:
 			self.enemy_team = [enemies.Amalgam()]
@@ -86,6 +86,8 @@ class BattleHandler:
 		if not self.enemy_team:
 			self.start_battle()
 			return
+		
+		print("Loading...")
 		
 		delay = None
 		if skip_header:
@@ -120,6 +122,7 @@ class BattleHandler:
 			
 			turn_info = turn_info | turn_info["Turn Owner"].take_turn(self)
 		
+		log.undo_line()
 		log.slow_print(f"TURN {self.turn_count}\n", delay)
 		
 		log.slow_print(f"{colors.GREEN}PLAYER TEAM:{colors.NORMAL}\n", delay)
