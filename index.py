@@ -3,6 +3,8 @@
 
 # AND Gemini told me to use flush=True in log.slow_print :(
 
+print("Loading...")
+
 import menu_input
 import commands
 import colors
