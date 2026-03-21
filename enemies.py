@@ -25,7 +25,6 @@ client = OpenAI(
 # 	response:{
 # 		party_member: "selected  party member from party, return as a string"
 # 		average_strength: "total the strength of all party members and return the average as an integer here"
-# 		current_pickahus_attack: "provide pikachus attack power ni here as an integer"
 # 	}
 # }
 
@@ -117,11 +116,12 @@ class Amalgam(Enemy):
 		for party_member in battle_handler.player_team:
 			game_state += f"\n\n# {party_member.name}"
 			game_state += f"\nWill {party_member.health}/{party_member.max_health}"
-			game_state += f"\nAttack: {self.attack}"
-			game_state += f"\nDefence: {self.defense}"
-			game_state += f"\nCharisma: {self.charisma}"
-			game_state += f"\nResolve: {self.resolve}"
+			game_state += f"\nAttack: {party_member.attack}"
+			game_state += f"\nDefence: {party_member.defense}"
+			game_state += f"\nCharisma: {party_member.charisma}"
+			game_state += f"\nResolve: {party_member.resolve}"
 		
+		# noinspection PyBroadException
 		try:
 			response = client.chat.completions.create(
 				messages=[
@@ -139,11 +139,12 @@ class Amalgam(Enemy):
 			max_tokens = 4096,
 			top_p = 1
 			)
-		except Exception as e:
+		except Exception:
 			self.health = 0
 			return {}
 		
 		message = re.search("`(.+?)`", response.choices[0].message.content).group(1)
+		log.add_message(game_state+"\n")
 		log.add_message(message)
 		message = message.split(" ")
 		
