@@ -59,7 +59,7 @@ class BattleHandler:
 		self.reset_battle()
 		
 		roll = random.randint(1, 10)
-		if roll <= 0:
+		if roll <= 9:
 			self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
 		else:
 			self.enemy_team = [enemies.Amalgam()]

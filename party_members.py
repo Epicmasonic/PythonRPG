@@ -262,5 +262,6 @@ class Groove(PartyMember):
 			skills.Electrify(),
 			skills.HammerChop(),
 			skills.Reboot(),
-			skills.Wonder()
+			skills.Wonder(),
+			skills.Burn()
 		]

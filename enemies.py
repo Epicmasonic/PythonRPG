@@ -106,7 +106,8 @@ class Amalgam(Enemy):
 		super().__init__("Amalgam" + suffix, 30, 0, 1.5, 2, 0.5)
 	
 	def take_turn(self, battle_handler):
-		game_state = f"# You"
+		game_state = f"Turn {battle_handler.turn_count}"
+		game_state += f"\n\n# You"
 		game_state += f"\nWill: {self.health}/{self.max_health}"
 		game_state += f"\nAttack: {self.attack}"
 		game_state += f"\nDefence: {self.defense}"
@@ -144,8 +145,8 @@ class Amalgam(Enemy):
 			return {}
 		
 		message = re.search("`(.+?)`", response.choices[0].message.content).group(1)
-		log.add_message(game_state+"\n")
-		log.add_message(message)
+	#	log.add_message(game_state+"\n")
+	#	log.add_message(message)
 		message = message.split(" ")
 		
 		battlers = battle_handler.player_team + battle_handler.enemy_team

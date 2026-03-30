@@ -161,6 +161,31 @@ class Attack(Skill):
 			"Damage Done": [damage]
 		}
 
+class Burn(Skill):
+	def __init__(self):
+		super().__init__(
+			"Burn",
+			f"Use 1 fire inspiration ({colors.FIRE}) to deal 2 fire damage.",
+			{
+				"Fire": 1
+			}
+		)
+	
+	def use(self, battle_handler, user):
+		self.pay_cost(user)
+		
+		enemy = random.choice(battle_handler.get_living_enemies())
+		
+		add_message(f"{user.name} used {self.name} on {enemy.name}.")
+		damage = enemy.take_damage(2, elements=["Fire"])
+		
+		return {
+			"Caster": user,
+			"Selected Target": enemy,
+			"Targets": [enemy],
+			"Damage Done": [damage]
+		}
+
 class Electrify(Skill):
 	def __init__(self):
 		super().__init__(
@@ -223,7 +248,7 @@ class Reboot(Skill):
 	def __init__(self):
 		super().__init__(
 			"Reboot",
-			f"Use all of your inspiration to heal 2 per inspiration used.",
+			f"Use all of your inspiration to heal 1 per inspiration used.",
 			{}
 		)
 	
@@ -234,7 +259,7 @@ class Reboot(Skill):
 		self.pay_cost(user)
 		
 		add_message(f"{user.name} used {self.name}.")
-		healing = user.heal(user.get_totalinspirations() * 2)
+		healing = user.heal(user.get_total_inspirations())
 		user.reset_inspiration()
 		
 		return {
