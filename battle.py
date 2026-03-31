@@ -4,7 +4,9 @@ import enemies
 import colors
 
 class BattleHandler:
-	def __init__(self):
+	def __init__(self, shop_handler):
+		self.shop_handler = shop_handler
+		
 		self.player_team = []
 		self.enemy_team = []
 		
@@ -55,7 +57,7 @@ class BattleHandler:
 	
 	def start_battle(self):
 		self.reset_battle()
-		self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
+		self.enemy_team = [enemies.Inklin(self.shop_handler, "A"),enemies.Inklin(self.shop_handler, "B")]
 		
 		log.slow_print(f"TURN {self.turn_count}\n")
 		

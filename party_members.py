@@ -113,7 +113,13 @@ class Battler:
 				log.add_message(f"{self.name} doesn’t budge!")
 		log.add_message(f"{self.name} took {damage} damage.")
 		
+		if self.health == 0:
+			self.get_defeated()
+		
 		return damage
+	
+	def get_defeated(self):
+		log.add_message(f"{self.name} forgot to update their get_defeated()")
 	
 	def heal(self, healing=0):
 		self.health += healing
@@ -165,6 +171,9 @@ class PartyMember(Battler):
 		self.known_skills = []
 		
 		self.equipped_skills = []
+	
+	def get_defeated(self):
+		log.add_message(f"{self.name} has given up...")
 	
 	def edit_skill(self, skill, target):
 		if skill in self.equipped_skills:
