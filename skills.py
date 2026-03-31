@@ -167,7 +167,7 @@ class Electrify(Skill):
 	
 	def use(self, battle_handler, user):
 		self.pay_cost(user)
-		inspiration_gained = user.change_inspirations("Zap", 1)
+		inspiration_gained = user.change_inspiration("Zap", 1)
 		
 		add_message(f"{user.name} used {self.name}.")
 		add_message(f"{user.name} gained {inspiration_gained} Zap inspiration.")
