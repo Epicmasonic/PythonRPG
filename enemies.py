@@ -5,7 +5,7 @@ from party_members import Battler
 import random
 
 class Enemy(Battler):
-	def __init__(self, shop_handler, name, health, reward, attack=0, defense=0, charisma=0, resolve=0, elemental_weaknesses=None, elemental_resistances=None):
+	def __init__(self, name, health, reward, attack=0, defense=0, charisma=0, resolve=0, elemental_weaknesses=None, elemental_resistances=None):
 		"""
 		:param name: Name of the character.
 		:type name: str
@@ -27,16 +27,14 @@ class Enemy(Battler):
 		
 		super().__init__(name, health, attack, defense, charisma, resolve, elemental_weaknesses, elemental_resistances)
 		
-		self.shop_handler = shop_handler
 		self.reward = reward
 	
 	def get_defeated(self):
 		add_message(f"{self.name} was defeated!")
-		self.shop_handler.gain_rewards(self.reward)
 
 class Inklin(Enemy):
-	def __init__(shop_handler, self,suffix=""):
-		super().__init__(shop_handler, "Inklin" + suffix, 5, 3, elemental_weaknesses=["Water"], elemental_resistances=["Poison", "Lie"])
+	def __init__(self,suffix=""):
+		super().__init__("Inklin" + suffix, 5, 3, elemental_weaknesses=["Water"], elemental_resistances=["Poison", "Lie"])
 	
 	def take_turn(self, battle_handler):
 		party_member = random.choice(battle_handler.get_living_party_members())

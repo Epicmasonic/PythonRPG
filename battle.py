@@ -57,7 +57,7 @@ class BattleHandler:
 	
 	def start_battle(self):
 		self.reset_battle()
-		self.enemy_team = [enemies.Inklin(self.shop_handler, "A"),enemies.Inklin(self.shop_handler, "B")]
+		self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
 		
 		log.slow_print(f"TURN {self.turn_count}\n")
 		
@@ -76,6 +76,11 @@ class BattleHandler:
 		
 		log.add_message("This is a battle intro message. (I couldn't think of anything lol)")
 		log.show_all()
+	
+	def check_defeated(self, was_living_enemies):
+		for enemy in was_living_enemies:
+			if enemy.health <= 0:
+				self.shop_handler.gain_rewards(enemy.reward)
 	
 	def run_turn(self, skip_header=False, skip_log=False, extra_info=False): # or more accurately, get_someone_to_run_turn_for_me()
 		if not self.enemy_team:
@@ -113,7 +118,9 @@ class BattleHandler:
 				self.player_tick = (self.player_tick + 1) % len(living_party_members)
 				turn_info["Turn Owner"] = living_party_members[self.player_tick]
 			
+			was_living_enemies = self.get_living_enemies()
 			turn_info = turn_info | turn_info["Turn Owner"].take_turn(self)
+			self.check_defeated(was_living_enemies)
 		
 		log.slow_print(f"TURN {self.turn_count}\n", delay)
 		
