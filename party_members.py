@@ -159,17 +159,8 @@ class PartyMember(Battler):
 		self.creativity = creativity
 		self.experience = 0
 		
-		self.inspirations = {
-			"Basic": 0,
-			"Fire": 0,
-			"Rock": 0,
-			"Zap": 0,
-			"Life": 0,
-			"Water": 0,
-			"Poison": 0,
-			"Truth": 0,
-			"Lie": 0
-		}
+		self.inspirations = {}
+		self.reset_inspiration()
 		
 		self.known_skills = []
 		
@@ -194,6 +185,19 @@ class PartyMember(Battler):
 		
 		self.inspirations[inspiration_type] += count
 		return count
+	
+	def reset_inspiration(self):
+		self.inspirations = {
+			"Basic": 0,
+			"Fire": 0,
+			"Rock": 0,
+			"Zap": 0,
+			"Life": 0,
+			"Water": 0,
+			"Poison": 0,
+			"Truth": 0,
+			"Lie": 0
+		}
 	
 	def get_total_inspirations(self):
 		total = 0
@@ -256,5 +260,7 @@ class Groove(PartyMember):
 			skills.Prepare(),
 			skills.Attack(),
 			skills.Electrify(),
-			skills.HammerChop()
+			skills.HammerChop(),
+			skills.Reboot(),
+			skills.Wonder()
 		]

@@ -89,6 +89,9 @@ class Prepare(Skill):
 			f"Gain 2 basic inspiration ({colors.BASIC})."
 		)
 	
+	def check_usability(self, battle_handler, user):
+		return user.creativity - user.get_total_inspirations() >= 2
+	
 	def use(self, battle_handler, user):
 		inspiration_gained = user.change_inspiration("Basic", 2)
 		
@@ -110,6 +113,9 @@ class Splash(Skill):
 			"Splash",
 			f"Gain 1 Water inspiration ({colors.WATER}) and deal 1 damage."
 		)
+	
+	def check_usability(self, battle_handler, user):
+		return user.creativity - user.get_total_inspirations() >= 1
 	
 	def use(self, battle_handler, user):
 		inspiration_gained = user.change_inspirations("Water", 1)
@@ -199,6 +205,8 @@ class HammerChop(Skill):
 		
 		living_enemies = battle_handler.get_living_enemies()
 		
+		enemy = random.choice(living_enemies)
+		
 		add_message(f"{user.name} used {self.name}.")
 		damage = []
 		for enemy in living_enemies:
@@ -209,4 +217,58 @@ class HammerChop(Skill):
 			"Selected Target": enemy,
 			"Targets": living_enemies,
 			"Damage Done": damage
+		}
+
+class Reboot(Skill):
+	def __init__(self):
+		super().__init__(
+			"Reboot",
+			f"Use all of your inspiration to heal 2 per inspiration used.",
+			{}
+		)
+	
+	def check_usability(self, battle_handler, user):
+		return user.get_total_inspirations() >= 1
+	
+	def use(self, battle_handler, user):
+		self.pay_cost(user)
+		
+		add_message(f"{user.name} used {self.name}.")
+		healing = user.heal(user.get_total_inspirations() * 2)
+		user.reset_inspiration()
+		
+		return {
+			"Caster": user,
+			"Selected Target": user,
+			"Targets": [user],
+			"healing Done": [healing]
+		}
+
+class Wonder(Skill):
+	def __init__(self):
+		super().__init__(
+			"Wonder",
+			f"Convert 1 {colors.BASIC} into a random inspiration.",
+			{
+				"Basic": 1
+			}
+		)
+	
+	def use(self, battle_handler, user):
+		self.pay_cost(user)
+		
+		inspiration_type = random.choice(["Fire","Rock","Zap","Life","Water","Poison","Truth","Lie"])
+		
+		inspiration_gained = user.change_inspiration(inspiration_type, 1)
+		
+		add_message(f"{user.name} used {self.name}.")
+		add_message(f"{user.name} gained {inspiration_gained} {inspiration_type} inspiration.")
+		
+		return {
+			"Caster": user,
+			"Selected Target": user,
+			"Targets": [user],
+			"Inspiration Gained": {
+				inspiration_type: inspiration_gained,
+			}
 		}
