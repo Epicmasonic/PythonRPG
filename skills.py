@@ -111,7 +111,7 @@ class Splash(Skill):
 	def __init__(self):
 		super().__init__(
 			"Splash",
-			f"Gain 1 Water inspiration ({colors.WATER}) and deal 1 damage."
+			f"Gain 1 Water inspiration ({colors.WATER}) and deal 1 pure damage."
 		)
 	
 	def check_usability(self, battle_handler, user):
@@ -140,7 +140,7 @@ class Attack(Skill):
 	def __init__(self):
 		super().__init__(
 			"Attack",
-			f"Use 1 basic inspiration ({colors.BASIC}) to deal 2 damage.",
+			f"Use 1 basic inspiration ({colors.BASIC}) to deal 2 physical damage.",
 			{
 				"Basic": 1
 			}
@@ -152,7 +152,7 @@ class Attack(Skill):
 		enemy = random.choice(battle_handler.get_living_enemies())
 		
 		add_message(f"{user.name} used {self.name} on {enemy.name}.")
-		damage = enemy.take_damage(2)
+		damage = enemy.take_damage(1 + user.attack)
 		
 		return {
 			"Caster": user,
@@ -193,7 +193,7 @@ class HammerChop(Skill):
 	def __init__(self):
 		super().__init__(
 			"Hammer Chop",
-			f"Use 2 {colors.BASIC} and 1 {colors.ZAP} to deal 3 damage to all enemies.",
+			f"Use 2 {colors.BASIC} and 1 {colors.ZAP} to deal 3 physical damage to all enemies.",
 			{
 				"Basic": 2,
 				"Zap": 1
@@ -210,7 +210,7 @@ class HammerChop(Skill):
 		add_message(f"{user.name} used {self.name}.")
 		damage = []
 		for enemy in living_enemies:
-			damage.append(enemy.take_damage(3))
+			damage.append(enemy.take_damage(2 + user.attack))
 		
 		return {
 			"Caster": user,

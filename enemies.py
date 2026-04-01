@@ -39,7 +39,7 @@ class Inklin(Enemy):
 	def take_turn(self, battle_handler):
 		party_member = random.choice(battle_handler.get_living_party_members())
 		add_message(f"{self.name} bites at {party_member.name}.")
-		damage = party_member.take_damage(2)
+		damage = party_member.take_damage(1 + self.attack)
 		
 		return {
 			"Caster": self,
