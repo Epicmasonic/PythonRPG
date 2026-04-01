@@ -195,6 +195,11 @@ def edit_plan(party_member):
 	
 	party_member.edit_skill(selected_skill, target)
 
+def command_shop(battle_handler, shop_handler):
+	log.slow_print(f"Your balance: {colors.BLUE}✦{colors.NORMAL} {shop_handler.gold} bits\n")
+	
+	log.slow_print("I haven't coded the shop yet. :/")
+
 def command_rest(battle_handler):
 	battle_handler.reset_battle()
 	

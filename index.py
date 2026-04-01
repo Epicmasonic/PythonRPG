@@ -23,6 +23,7 @@ COMMANDS = [
 	"Help",
 	"Party",
 	"Rest",
+	"Shop",
 	"Fight",
 	"Create",
 	"Exit"
@@ -32,6 +33,7 @@ MENU_ITEMS = [
 	"Learn more about mechanics.",
 	"Check in on my party.",
 	f"Take a break. {colors.GRAY}(Save){colors.NORMAL}",
+	"Visit the shop.",
 	"Get into a fight!",
 	"Recruit more fighters.",
 	"Get out of here!"
@@ -58,6 +60,8 @@ while True:
 			commands.command_help()
 		case "Party":
 			commands.command_party(battle_handler, shop_handler)
+		case "Shop":
+			commands.command_shop(battle_handler, shop_handler)
 		case "Rest":
 			commands.command_rest(battle_handler)
 		case "Fight":
@@ -71,3 +75,5 @@ while True:
 	menu_input.eat_input()
 	menu_input.wait_for_input()
 	log.clear()
+
+log.clear()
