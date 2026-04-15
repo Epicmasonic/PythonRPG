@@ -223,7 +223,7 @@ class Reboot(Skill):
 	def __init__(self):
 		super().__init__(
 			"Reboot",
-			f"Use all of your inspiration to heal 2 per inspiration used.",
+			f"Use all of your inspiration to heal per inspiration used.",
 			{}
 		)
 	
@@ -234,7 +234,7 @@ class Reboot(Skill):
 		self.pay_cost(user)
 		
 		add_message(f"{user.name} used {self.name}.")
-		healing = user.heal(user.get_total_inspirations() * 2)
+		healing = user.heal(user.get_total_inspirations())
 		user.reset_inspiration()
 		
 		return {

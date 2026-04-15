@@ -14,7 +14,7 @@ def clear():
 		# Command for Linux, macOS, and other POSIX systems
 		_ = os.system('clear')
 
-def slow_print(message, delay=None,  new_line=True):
+def slow_print(message, delay=None, new_line=True):
 	"""
 	Just* like Print() but it has small delay between each character.
 	:param message: Message to add to the queue.

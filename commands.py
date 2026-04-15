@@ -217,14 +217,14 @@ def command_fight(battle_handler, shop_handler):
 		"Single",
 		"Semi Auto",
 		"Auto",
-		#"Full Auto"
+		"Full Auto"
 	]
 	
 	TITLES = [
 		"Just run a single turn.",
 		"Run though turns until someone wins.",
 		"Run though turns automatically until someone wins.",
-		#"Automatically run as many battles as we can."
+		"Automatically run as many battles as we can."
 	]
 	
 	slow_print(f"How much fighting do you want to do?\n")
@@ -242,7 +242,8 @@ def command_fight(battle_handler, shop_handler):
 		input_needed = True
 	else:
 		while True:
-			delay = input("How many seconds do you want to wait?\n\n> ")
+			slow_print("How many seconds do you want to wait?\n\n> ", new_line=False)
+			delay = input()
 			try:
 				delay = float(delay)
 				break
@@ -255,13 +256,22 @@ def command_fight(battle_handler, shop_handler):
 	
 	extra_loop = False
 	first_loop = True
+	fight = 1
 	while True:
+		if speed == "Full Auto":
+			if first_loop:
+				slow_print(f"Fight {fight}")
+			else:
+				print(f"Fight {fight}")
+		
 		battle_handler.run_turn(not first_loop, not input_needed)
 		
-		if battle_handler.check_for_win() or battle_handler.check_for_loss():
+		if (speed != "Full Auto" and battle_handler.check_for_win()) or battle_handler.check_for_loss():
 			if extra_loop or first_loop:
 				break
 			extra_loop = True
+		elif speed == "Full Auto" and battle_handler.check_for_win():
+			fight += 1
 		
 		if input_needed:
 			menu_input.eat_input()
