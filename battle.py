@@ -3,6 +3,8 @@ import log
 import enemies
 import colors
 
+import random
+
 class BattleHandler:
 	def __init__(self, shop_handler):
 		self.shop_handler = shop_handler
@@ -57,7 +59,12 @@ class BattleHandler:
 	
 	def start_battle(self):
 		self.reset_battle()
-		self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
+		
+		roll = random.randint(1, 10)
+		if roll <= 9:
+			self.enemy_team = [enemies.Inklin("A"),enemies.Inklin("B")]
+		else:
+			self.enemy_team = [enemies.Amalgam()]
 		
 		log.slow_print(f"TURN {self.turn_count}\n")
 		
@@ -86,6 +93,8 @@ class BattleHandler:
 		if not self.enemy_team:
 			self.start_battle()
 			return
+		
+		print("Loading...")
 		
 		delay = None
 		if skip_header:
@@ -122,6 +131,7 @@ class BattleHandler:
 			turn_info = turn_info | turn_info["Turn Owner"].take_turn(self)
 			self.check_defeated(was_living_enemies)
 		
+		log.undo_line()
 		log.slow_print(f"TURN {self.turn_count}\n", delay)
 		
 		log.slow_print(f"{colors.GREEN}PLAYER TEAM:{colors.NORMAL}\n", delay)
