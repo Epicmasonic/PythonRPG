@@ -1,7 +1,6 @@
 #import colors
 
 import log
-from log import add_message
 from party_members import Battler
 
 import random
@@ -11,7 +10,15 @@ import re
 import os
 from openai import OpenAI
 
-token = os.environ["GITHUB_TOKEN"]
+try:
+	token = os.environ["GITHUB_TOKEN"]
+except KeyError:
+	log.clear()
+	log.slow_print("Oops! It seems like the you haven't set up your AI API key yet.")
+	log.slow_print("Please use the following command to set it up:")
+	log.slow_print("$Env:GITHUB_TOKEN=\"your_token_here\"")
+	
+	token = None
 endpoint = "https://models.github.ai/inference"
 model_name = "openai/gpt-4o-mini"
 
@@ -83,7 +90,7 @@ class Enemy(Battler):
 		self.reward = reward
 	
 	def get_defeated(self):
-		add_message(f"{self.name} was defeated!")
+		log.add_message(f"{self.name} was defeated!")
 
 class Inklin(Enemy):
 	def __init__(self,suffix=""):
@@ -91,7 +98,7 @@ class Inklin(Enemy):
 	
 	def take_turn(self, battle_handler):
 		party_member = random.choice(battle_handler.get_living_party_members())
-		add_message(f"{self.name} bites at {party_member.name}.")
+		log.add_message(f"{self.name} bites at {party_member.name}.")
 		damage = party_member.take_damage(1 + self.attack)
 		
 		return {
