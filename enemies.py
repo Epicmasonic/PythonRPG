@@ -14,9 +14,9 @@ try:
 	token = os.environ["GITHUB_TOKEN"]
 except KeyError:
 	log.clear()
-	log.slow_print("Oops! It seems like the you haven't set up your AI API key yet.")
+	log.slow_print(f"{colors.RED}Oops!{colors.NORMAL} It seems like the you haven't set up your AI API key yet.")
 	log.slow_print("Please use the following command to set it up:")
-	log.slow_print("$Env:GITHUB_TOKEN=\"your_token_here\"")
+	log.slow_print(f"{colors.GREEN}$Env:GITHUB_TOKEN{colors.NORMAL}{colors.GRAY}={colors.NORMAL}{colors.BLUE}\"your_token_here\"{colors.NORMAL}\n")
 	
 	token = None
 endpoint = "https://models.github.ai/inference"
