@@ -1,10 +1,9 @@
-#import colors
-
-import log
-from party_members import Battler
-
 import random
 import re
+
+import colors
+import log
+from party_members import Battler
 
 # The imports of shame
 import os
