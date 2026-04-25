@@ -267,10 +267,5 @@ class Groove(PartyMember):
 		
 		self.known_skills = [
 			skills.Prepare(),
-			skills.Attack(),
-			skills.Electrify(),
-			skills.HammerChop(),
-			skills.Reboot(),
-			skills.Wonder(),
-			skills.Burn()
+			skills.Attack()
 		]

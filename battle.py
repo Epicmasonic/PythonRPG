@@ -6,7 +6,7 @@ import colors
 import random
 
 class BattleHandler:
-	def __init__(self, shop_handler):
+	def __init__(self, shop_handler=None):
 		self.shop_handler = shop_handler
 		
 		self.player_team = []

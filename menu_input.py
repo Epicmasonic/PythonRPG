@@ -83,7 +83,7 @@ def get_choice(options, labels=None):
 		
 		lines = len(page_contents) + 2  # That plus 2 is because of the next line.
 		
-		log.slow_print(f"Page: {page}/{max_page}\n")
+		log.slow_print(f"{colors.GRAY}Page: {page}/{max_page}{colors.NORMAL}\n")
 		
 		valid_keys = []
 		for i in range(len(page_contents)):

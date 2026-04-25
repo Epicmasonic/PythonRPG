@@ -151,8 +151,8 @@ class Amalgam(Enemy):
 			return {}
 		
 		message = re.search("`(.+?)`", response.choices[0].message.content).group(1)
-	#	log.add_message(game_state+"\n")
-	#	log.add_message(message)
+#		log.add_message(game_state+"\n")
+#		log.add_message(message)
 		message = message.split(" ")
 		
 		battlers = battle_handler.player_team + battle_handler.enemy_team

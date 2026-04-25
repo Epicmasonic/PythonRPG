@@ -10,12 +10,14 @@ import commands
 import colors
 import log
 
-import shop
-shop_handler = shop.Shop()
 import battle
-battle_handler = battle.BattleHandler(shop_handler) # Bit of a hack to let `enemies.py` access `shop` but it wouldn't work as just a `import` so...
+battle_handler = battle.BattleHandler() # shop_handler=None
 from party_members import Groove
 battle_handler.player_team.append(Groove())
+
+import shop
+shop_handler = shop.Shop(battle_handler)
+battle_handler.shop_handler = shop_handler
 
 # Debug stuff
 #battle_handler.player_team[0].health = 10
