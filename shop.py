@@ -72,7 +72,7 @@ class BuyableSkill(BuyableItem):
 		self.battle_handler = battle_handler
 	
 	def use(self, shop_handler):
-		menu.get_choice(self.battle_handler.player_team).skills.append(self.skill)
+		menu.get_choice(self.battle_handler.player_team).known_skills.append(self.skill)
 
 class Reroll(BuyableItem):
 	def __init__(self):
