@@ -269,3 +269,7 @@ class Groove(PartyMember):
 			skills.Prepare(),
 			skills.Attack()
 		]
+		self.equipped_skills = [
+			skills.Attack(),
+			skills.Prepare()
+		]

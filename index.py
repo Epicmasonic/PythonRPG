@@ -36,7 +36,7 @@ COMMANDS = [
 MENU_ITEMS = [
 	"Learn more about mechanics.",
 	"Check in on my party.",
-	f"Take a break. {colors.GRAY}(Save){colors.NORMAL}",
+	f"Take a break. {colors.GRAY}(Heal){colors.NORMAL}",
 	"Visit the shop.",
 	"Get into a fight!",
 	"Recruit more fighters.",

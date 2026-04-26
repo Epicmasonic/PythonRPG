@@ -147,6 +147,7 @@ class Amalgam(Enemy):
 			top_p = 1
 			)
 		except Exception:
+			log.add_message(f"{self.name} blew up?!")
 			self.health = 0
 			return {}
 		

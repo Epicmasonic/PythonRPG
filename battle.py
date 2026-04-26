@@ -57,7 +57,7 @@ class BattleHandler:
 		
 		self.seen_win = False
 	
-	def start_battle(self):
+	def start_battle(self, skip_intro=False):
 		self.reset_battle()
 		
 		roll = random.randint(1, 10)
@@ -66,23 +66,27 @@ class BattleHandler:
 		else:
 			self.enemy_team = [enemies.Amalgam()]
 		
-		log.slow_print(f"TURN {self.turn_count}\n")
+		delay = None
+		if skip_intro:
+			delay = 0
 		
-		log.slow_print(f"{colors.GREEN}PLAYER TEAM:{colors.NORMAL}\n")
+		log.slow_print(f"TURN {self.turn_count}\n", delay)
+		
+		log.slow_print(f"{colors.GREEN}PLAYER TEAM:{colors.NORMAL}\n", delay)
 		for party_member in self.player_team:
-			log.slow_print(f"{party_member.name}:")
-			log.slow_print(f"[{party_member.stringify_health()}] {party_member.health}/{party_member.max_health}")
-			log.slow_print(f"[{party_member.stringify_inspirations()}] {party_member.get_total_inspirations()}/{party_member.creativity}\n")
+			log.slow_print(f"{party_member.name}:", delay)
+			log.slow_print(f"[{party_member.stringify_health()}] {party_member.health}/{party_member.max_health}", delay)
+			log.slow_print(f"[{party_member.stringify_inspirations()}] {party_member.get_total_inspirations()}/{party_member.creativity}\n", delay)
 		
-		log.slow_print(f"{colors.GREEN}ENEMY TEAM:{colors.NORMAL}\n")
+		log.slow_print(f"{colors.GREEN}ENEMY TEAM:{colors.NORMAL}\n", delay)
 		for enemy in self.enemy_team:
-			log.slow_print(f"{enemy.name}:")
-			log.slow_print(f"[{enemy.stringify_health()}] {enemy.health}/{enemy.max_health}\n")
+			log.slow_print(f"{enemy.name}:", delay)
+			log.slow_print(f"[{enemy.stringify_health()}] {enemy.health}/{enemy.max_health}\n", delay)
 		
-		log.slow_print(f"{colors.GREEN}BATTLE LOG:{colors.NORMAL}\n")
+		log.slow_print(f"{colors.GREEN}BATTLE LOG:{colors.NORMAL}\n", delay)
 		
 		log.add_message("This is a battle intro message. (I couldn't think of anything lol)")
-		log.show_all()
+		log.show_all(delay)
 	
 	def check_defeated(self, was_living_enemies):
 		for enemy in was_living_enemies:
@@ -91,7 +95,7 @@ class BattleHandler:
 	
 	def run_turn(self, skip_header=False, skip_log=False, extra_info=False): # or more accurately, get_someone_to_run_turn_for_me()
 		if not self.enemy_team:
-			self.start_battle()
+			self.start_battle(skip_header)
 			return
 		
 		print("Loading...")

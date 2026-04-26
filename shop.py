@@ -72,7 +72,23 @@ class BuyableSkill(BuyableItem):
 		self.battle_handler = battle_handler
 	
 	def use(self, shop_handler):
-		menu.get_choice(self.battle_handler.player_team).known_skills.append(self.skill)
+		menu.wait_for_input()
+		while True:
+			log.clear()
+			log.slow_print(f"You who should learn {self.name}?")
+			student = menu.get_choice(self.battle_handler.player_team)
+			if self.skill in student.known_skills:
+				log.slow_print(f"{student.name} already knows {self.name}.\n")
+				log.slow_print(f"What do you want to do about this?\n")
+				answer = menu.get_choice([True, False], ["Give me a refund", "Pick someone else"])
+				if answer:
+					shop_handler.gold += self.cost
+					log.slow_print("Refunded!")
+					return
+			else:
+				log.slow_print(f"\n{student.name} learned {self.name}!")
+				student.known_skills.append(self.skill)
+				return
 
 class Reroll(BuyableItem):
 	def __init__(self):

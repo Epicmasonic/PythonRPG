@@ -224,7 +224,7 @@ def command_fight(battle_handler, shop_handler):
 		"Just run a single turn.",
 		"Run though turns until someone wins.",
 		"Run though turns automatically until someone wins.",
-		"Automatically run as many battles as we can."
+		"Run though battles automatically until we lose."
 	]
 	
 	slow_print(f"How much fighting do you want to do?\n")
@@ -257,12 +257,13 @@ def command_fight(battle_handler, shop_handler):
 	extra_loop = False
 	first_loop = True
 	fight = 1
+	bandaid_fix = False
 	while True:
 		if speed == "Full Auto":
 			if first_loop:
-				slow_print(f"Fight {fight}")
+				slow_print(f"FIGHT {fight}")
 			else:
-				print(f"Fight {fight}")
+				print(f"FIGHT {fight}")
 		
 		battle_handler.run_turn(not first_loop, not input_needed)
 		
@@ -271,7 +272,12 @@ def command_fight(battle_handler, shop_handler):
 				break
 			extra_loop = True
 		elif speed == "Full Auto" and battle_handler.check_for_win():
-			fight += 1
+			if bandaid_fix:
+				fight += 1
+				bandaid_fix = False
+			else:
+				bandaid_fix = True
+		
 		
 		if input_needed:
 			menu_input.eat_input()
@@ -286,6 +292,7 @@ def command_fight(battle_handler, shop_handler):
 def command_create(battle_handler):
 	temp = PartyMember("Unnamed",15,5)
 	temp.known_skills = [skills.Prepare(), skills.Attack()]
+	temp.equipped_skills = [skills.Attack(), skills.Prepare()]
 	
 	delay = None
 	while True:
