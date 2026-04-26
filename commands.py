@@ -10,14 +10,16 @@ def command_help():
 		"Skip Text",
 		"Stats",
 		"Float Stats",
-		"Inspiration Colors"
+		"Inspiration Colors",
+		"Back"
 	]
 	
 	TITLES = [
 		"Is there a way to have text load faster?",
 		"What do all the stats do?",
 		"Why do some stats have decimal points?",
-		"What kinds of Inspirations are there?"
+		"What kinds of Inspirations are there?",
+		f"Nothing {colors.GRAY}(Back){colors.NORMAL}"
 	]
 	
 	log.slow_print(f"What would you like to learn about?")
@@ -25,6 +27,9 @@ def command_help():
 	log.clear()
 	
 	match page:
+		case "Back":
+			log.slow_print("Alright, let's head back then!")
+		
 		case "Skip Text":
 			log.slow_print("There is!\nYou can hit any button while I'm writing for me to spit it all out at once.")
 			log.slow_print("How about you try it out now? I'll keep writing and you can press something to skip it!")
@@ -81,20 +86,31 @@ def command_help():
 			log.slow_print("Maybe I just haven't gotten around to writing it?")
 
 def command_party(battle_handler, shop_handler):
+	party_members = []
+	for party_member in battle_handler.player_team:
+		party_members.append(party_member)
+	party_members.append("Back")
+	
 	party_names = []
 	for party_member in battle_handler.player_team:
 		party_names.append(party_member.name)
+	party_names.append(f"No one {colors.GRAY}(Back){colors.NORMAL}")
 	
 	slow_print("Who are you interested in?\n")
-	chosen_party_member = menu_input.get_choice(battle_handler.player_team, party_names)
+	chosen_party_member = menu_input.get_choice(party_members, party_names)
 	log.clear()
+	
+	if chosen_party_member == "Back":
+		log.slow_print("Alright, let's head back then!")
+		return
 	
 	PAGES = [
 		"Stats",
 		#"Traits",
 		"Known Skills",
 		"Equipped Skills",
-		"Equip Skills"
+		"Equip Skills",
+		"Back"
 	]
 	
 	TITLES = [
@@ -102,7 +118,8 @@ def command_party(battle_handler, shop_handler):
 		#f"What are they like? {colors.GRAY}(Traits){colors.NORMAL}",
 		"See what skills do they know.",
 		"See what are they planing to do.",
-		"Change their plans."
+		"Change their plans.",
+		f"Nothing. {colors.GRAY}(Back){colors.NORMAL}"
 	]
 	
 	slow_print(f"What do you want to do with {chosen_party_member.name}?\n")
@@ -110,6 +127,10 @@ def command_party(battle_handler, shop_handler):
 	log.clear()
 	
 	match page:
+		case "Back":
+			log.slow_print("Alright, let's head back then!")
+			return
+	
 		case "Stats":
 			dashCount = len(chosen_party_member.name) + 10
 			log.slow_print(colors.GREEN + "-" * dashCount)
@@ -217,19 +238,25 @@ def command_fight(battle_handler, shop_handler):
 		"Single",
 		"Semi Auto",
 		"Auto",
-		"Full Auto"
+		"Full Auto",
+		"Back"
 	]
 	
 	TITLES = [
 		"Just run a single turn.",
 		"Run though turns until someone wins.",
 		"Run though turns automatically until someone wins.",
-		"Run though battles automatically until we lose."
+		"Run though battles automatically until we lose.",
+		f"Nevermind! {colors.GRAY}(Back){colors.NORMAL}"
 	]
 	
 	slow_print(f"How much fighting do you want to do?\n")
 	speed = menu_input.get_choice(PAGES, TITLES)
 	log.clear()
+	
+	if speed == "Back":
+		log.slow_print("Alright, let's head back then!")
+		return
 	
 	if speed == "Single":
 		battle_handler.run_turn()
@@ -321,7 +348,7 @@ def command_create(battle_handler):
 			"Reassign stats.",
 			#"Pick traits.",
 			"I'm done!",
-			"Nevermind..."
+			f"Nevermind... {colors.GRAY}(Back){colors.NORMAL}"
 		]
 		
 		field = menu_input.get_choice(options, labels)

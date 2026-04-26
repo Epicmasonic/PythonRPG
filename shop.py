@@ -36,13 +36,24 @@ class Shop:
 		self.store_front.append(Reroll())
 	
 	def store_menu(self): # This feels like it should be in commands.py but it probably make more sense here?
-		log.slow_print("Welcome to the shop! Here are the items available for purchase:\n")
+		log.slow_print("Welcome to the shop! What do you want to buy?\n")
+		
+		item_options = []
+		for item in self.store_front:
+			item_options.append(item)
+		item_options.append("Back")
 		
 		item_labels = []
 		for item in self.store_front:
 			item_labels.append(f"{colors.GREEN}{item.name}{colors.NORMAL} - {colors.BLUE}✦ {item.cost}{colors.NORMAL}\n\t{item.description}\n")
+		item_labels.append(f"Nothing {colors.GRAY}(Back){colors.NORMAL}")
 		
-		bought = menu.get_choice(self.store_front, item_labels)
+		bought = menu.get_choice(item_options, item_labels)
+		log.clear()
+		
+		if bought == "Back":
+			log.slow_print("Alright, let's head back then!")
+			return
 		bought.buy(self)
 
 class BuyableItem:
